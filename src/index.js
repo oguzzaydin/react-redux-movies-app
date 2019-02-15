@@ -2,28 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-import  { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk'
-import rootReducer from './reducers/rootReducer'
-import { composeWithDevTools } from "redux-devtools-extension";
+import reduxPromise from 'redux-promise-middleware';
+
+import rootReducer from './reducers/rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
-import {BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
+import {logger} from "redux-logger/src";
 
 const store = createStore(
     rootReducer,
     composeWithDevTools(
-        applyMiddleware(thunk)
-     )
+        applyMiddleware(reduxPromise(), thunk, logger)
+    )
 );
+
+
 
 ReactDOM.render(
     <BrowserRouter>
-         <Provider store={store}>
-              <App />
-         </Provider>
+        <Provider store={store}>
+            <App />
+        </Provider>
     </BrowserRouter>,
     document.getElementById('root')
 );
-
-

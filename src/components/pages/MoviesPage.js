@@ -1,29 +1,30 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect} from "react-redux";
+import { connect } from 'react-redux';
 
+import {
+    fetchMovies,
+} from '../../actions/movies';
 import MoviesList from '../MoviesList';
 
 class MoviesPage extends Component {
-    state = {
-        
-    };
-    static defaultProps = {};
-    static propTypes = {
-        //movies: PropTypes.array.isRequired
-    };
+
+
+    componentDidMount() {
+        this.props.fetchMovies();
+        console.log('ASDSADA',this.props)
+    }
 
     render() {
-        console.log(this.props)
         return (
             <div>
-                <h2>Movies Page</h2>
-                <MoviesList movies = { this.props.movies }></MoviesList>
+                <h2>Movies</h2>
+                <MoviesList
+                    movies={this.props.movies} />
             </div>
         );
     }
 }
-
 
 const mapStateToProps = ({ movies }) => {
     return {
@@ -31,4 +32,8 @@ const mapStateToProps = ({ movies }) => {
     }
 };
 
-export default connect(mapStateToProps)(MoviesPage);
+const mapDispatchToProps = {
+    fetchMovies,
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(MoviesPage);
