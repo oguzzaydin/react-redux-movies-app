@@ -1,24 +1,31 @@
-import {FETCH_MOVIES_FULLFILLED, FETCH_MOVIES_REJECTED } from '../actions/movies';
+import { FETCH_MOVIES_FULFILLED, FETCH_MOVIES_REJECTED, FETCH_MOVIES_PENDING } from '../actions/movies';
 
 const initialState = {
     fetching: false,
-    fetched: false,
     movies: [],
     error: {}
 };
+
 export default (state = initialState, action) => {
-    console.log(action);
-    switch (action.type) {
-        case  FETCH_MOVIES_FULLFILLED:
+    switch (action.type){
+        case FETCH_MOVIES_PENDING:
             return {
                 ...state,
-                movies: action.payload
-            }
-        case  FETCH_MOVIES_REJECTED:
+                movies: action.payload,
+                fetching: true
+            };
+        case FETCH_MOVIES_FULFILLED:
             return {
                 ...state,
-                error: action.payload
-            }
+                movies: action.payload,
+                fetching: false
+            };
+        case FETCH_MOVIES_REJECTED:
+            return {
+                ...state,
+                error: action.payload,
+                fetching: false
+            };
         default:
             return state;
     }

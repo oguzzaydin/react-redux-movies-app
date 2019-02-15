@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Grid} from 'semantic-ui-react';
+import MovieCard from './MovieCard';
 
 const MoviesList = ({ movies }) => {
     const emptyMessage = (
@@ -8,20 +10,30 @@ const MoviesList = ({ movies }) => {
 
     const moviesList = (
         <div>
+            {
+                movies.error.response
+                    ? <h3>Error retrieving data!</h3>
+                    :
+                    <Grid stackable columns={3}>
+                        {
+                            movies.movies.map(movie => <MovieCard key={movie._id} movie={movie} />)
+                        }
+                    </Grid>
+            }
         </div>
     );
 
     return (
         <div>
-            { movies ? emptyMessage : moviesList }
+            { movies.length === 0 ? emptyMessage : moviesList }
         </div>
     );
 };
 
-/*MoviesList.propTypes = {
+MoviesList.propTypes = {
     movies: PropTypes.shape({
-        movieList: PropTypes.array.isRequired
+        movies: PropTypes.array.isRequired
     }).isRequired
-};*/
+};
 
 export default MoviesList;
