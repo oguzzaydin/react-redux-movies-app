@@ -1,4 +1,8 @@
-import { FETCH_MOVIES_FULFILLED, FETCH_MOVIES_REJECTED, FETCH_MOVIES_PENDING } from '../actions/movies';
+import {
+    FETCH_MOVIES_PENDING,
+    FETCH_MOVIES_FULFILLED,
+    FETCH_MOVIES_REJECTED
+} from '../actions/movies';
 
 const initialState = {
     fetching: false,
@@ -11,7 +15,6 @@ export default (state = initialState, action) => {
         case FETCH_MOVIES_PENDING:
             return {
                 ...state,
-                movies: action.payload,
                 fetching: true
             };
         case FETCH_MOVIES_FULFILLED:
