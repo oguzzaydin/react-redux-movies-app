@@ -1,28 +1,44 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 import NewMovieForm from '../NewMovieForm';
 
+import { connect } from "react-redux";
+import { onNewMovieSubmit, onUpdateMovieSubmit, fetchMovie } from "../../actions/newMovie";
+
 class NewMoviePage extends Component {
-    state = {
-        
-    };
-
-    static defaultProps = {
-        
-    };
-
-    static propTypes = {};
+    componentDidMount() {
+        const { match } = this.props;
+        if (!this.props.movie && match.params._id) {
+            this.props.fetchMovie(match.params._id);
+        }
+    }
 
     render() {
         return (
             <div>
-                <NewMovieForm/>
+                <h2>New Movie</h2>
+                <NewMovieForm
+                    movie={this.props.movie}
+                    newMovie={this.props.newMovie}
+                    onNewMovieSubmit={this.props.onNewMovieSubmit}
+                    onUpdateMovieSubmit={this.props.onUpdateMovieSubmit}/>
             </div>
         );
     }
 }
 
-NewMoviePage.propTypes = {};
 
-export default NewMoviePage;
+const mapStateToProps = ({newMovie, movies}, props) => {
+    return {
+        newMovie,
+        movie: movies.movieList.find(item => item._id === props.match.params._id)
+    }
+};
+
+const mapDispatchToProps = {
+    onNewMovieSubmit,
+    onUpdateMovieSubmit,
+    fetchMovie
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewMoviePage);
